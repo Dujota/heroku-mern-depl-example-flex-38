@@ -5,15 +5,22 @@ import './App.css';
 function App() {
 const [email, setEmail] = useState('')
 const [password, setPassword] = useState('')
+const [user, setUser] = useState(null)
 
 async function registerUser(){
-  const res = await fetch('/api/users/signup',  {
-    method: 'POST',
-    headers: new Headers({'Content-Type': 'application/json'}),
-    body: JSON.stringify({email, password})
-  })
-  const user = await res.json()
-  console.log(user);
+  try{
+    const res = await fetch('/api/users/signup',  {
+      method: 'POST',
+      headers: new Headers({'Content-Type': 'application/json'}),
+      body: JSON.stringify({email, password})
+    })
+    const user = await res.json()
+    setEmail('')
+    setPassword('')
+    setUser(user)
+  }catch(e){
+    console.error(e)
+  }
   // debugger;
 }
 
@@ -27,6 +34,13 @@ async function registerUser(){
         <label for="password">Password<input type="text" name="password" value={password} onChange={e=> setPassword(e.target.value)}/></label>
         <button type="submit">Post</button>
       </form>
+
+      {user &&
+        <>
+        <h1>New User Created</h1>
+        <h2>{user.email}</h2>
+        </>
+      }
     </div>
   );
 }
