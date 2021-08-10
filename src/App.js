@@ -14,10 +14,10 @@ async function registerUser(){
       headers: new Headers({'Content-Type': 'application/json'}),
       body: JSON.stringify({email, password})
     })
-    const user = await res.json()
+    const data = await res.json()
     setEmail('')
     setPassword('')
-    setUser(user)
+    setUser(data.user)
   }catch(e){
     console.error(e)
   }
@@ -38,6 +38,7 @@ async function registerUser(){
       {user &&
         <>
         <h1>New User Created</h1>
+        <h2>{user._id}</h2>
         <h2>{user.email}</h2>
         </>
       }
